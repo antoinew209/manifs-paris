@@ -199,6 +199,8 @@ footer { color: var(--muted); font-size: 14px; }
     {"nom": "Concorde", "lat": 48.8656, "lon": 2.3212, "rayon": 350, "niveau": "moyenne"},
     {"nom": "Assemblée nationale", "lat": 48.8619, "lon": 2.3186, "rayon": 300, "niveau": "moyenne"}
   ]</script>
+  <!-- Les anciennes versions de la page ne savent remplacer que ce bloc : cette image, une fois inseree, recharge toute la page si la mise en page (meta build) a change. Garder data-build egal a la meta. -->
+  <img alt="" hidden width="1" height="1" data-build="2" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
 </main>
 <script>
 // Chaque fil ne montre que la derniere entree ; les precedentes passent dans un
