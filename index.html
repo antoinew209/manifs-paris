@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="300">
+<title>Paris, manifs du 31 octobre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Fiche de terrain : lecture sur téléphone, l'état (fermé, à éviter, couvre-feu) se lit à la couleur avant le texte. */
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --ink: #1b2130;
+  --muted: #5b6475;
+  --line: #dde1e8;
+  --accent: #23407a;
+  --closed: #b42318;
+  --closed-bg: #fdecea;
+  --warn: #8a5a00;
+  --warn-bg: #fff4dc;
+  --night: #3b2f73;
+  --night-bg: #eeebfb;
+  --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12151c; --surface: #1b1f29; --ink: #e8ebf1; --muted: #9aa3b4; --line: #2c3240;
+    --accent: #8fb0ef; --closed: #ff8a80; --closed-bg: #3a1c1c; --warn: #f2c066; --warn-bg: #352a12;
+    --night: #b9aaf5; --night-bg: #261f45; color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 400 17px/1.5 var(--body); }
+main { max-width: 680px; margin: 0 auto; padding: 20px 16px 40px; display: grid; gap: 16px; }
+header { display: grid; gap: 6px; }
+h1 { font: 700 34px/1.05 var(--display); margin: 0; text-wrap: balance; letter-spacing: .01em; }
+h2 { font: 600 22px/1.15 var(--display); margin: 0; letter-spacing: .02em; text-transform: uppercase; }
+.stamp { display: inline-flex; gap: 8px; align-items: center; flex-wrap: wrap; color: var(--muted); font-size: 15px; }
+.stamp b { color: var(--accent); font-variant-numeric: tabular-nums; }
+.brief { display: grid; gap: 8px; }
+.pill { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; padding: 10px 12px; border-radius: 8px; border-left: 5px solid; }
+.pill .k { font: 700 15px/1.3 var(--display); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; padding-top: 1px; }
+.p-closed { background: var(--closed-bg); border-color: var(--closed); }
+.p-closed .k { color: var(--closed); }
+.p-warn { background: var(--warn-bg); border-color: var(--warn); }
+.p-warn .k { color: var(--warn); }
+.p-night { background: var(--night-bg); border-color: var(--night); }
+.p-night .k { color: var(--night); }
+section { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 12px; }
+.slots { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.slot { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+.slot:first-child { border-top: 0; padding-top: 0; }
+.slot time { font: 700 20px/1.2 var(--display); color: var(--closed); font-variant-numeric: tabular-nums; }
+.slot p { margin: 0; }
+.note { color: var(--muted); font-size: 15px; margin: 0; }
+p { margin: 0; }
+ul.plain { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.sources { font-size: 15px; }
+.sources a { color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+footer { color: var(--muted); font-size: 14px; }
+@media (max-width: 400px) { h1 { font-size: 30px; } .slot { grid-template-columns: 56px 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Paris, manifestations du samedi 31 octobre</h1>
+    <div class="stamp"><span>Mis à jour au point de <b>9 h</b></span><span>·</span><span>mise à jour toutes les 30 min, prochain point vers 9 h 30</span></div>
+  </header>
+
+  <div class="brief" aria-label="En bref">
+    <div class="pill p-closed"><span class="k">Métro</span><span>Entre 30 et 40 stations fermées dans le centre, surtout Concorde–Champs-Élysées et Bastille–République.</span></div>
+    <div class="pill p-warn"><span class="k">Cortège</span><span>Seul parcours autorisé : porte de Bagnolet → porte de Charenton, par les boulevards des Maréchaux.</span></div>
+    <div class="pill p-night"><span class="k">Couvre-feu</span><span>23 h – 6 h, du 31 octobre au 2 novembre, secteurs République et Châtelet-Les Halles.</span></div>
+  </div>
+
+  <section aria-labelledby="h-metro">
+    <h2 id="h-metro">Stations fermées</h2>
+    <ul class="slots">
+      <li class="slot"><time>5 h 30</time><p>Secteur Champs-Élysées, Concorde, Invalides et Assemblée nationale. Charles-de-Gaulle-Étoile fermée toute la journée, ligne 6 coupée entre Charles-de-Gaulle-Étoile et Kléber.</p></li>
+      <li class="slot"><time>9 h</time><p>Secteur Bastille, République, Strasbourg-Saint-Denis et Opéra.</p></li>
+      <li class="slot"><time>20 h</time><p>Châtelet et Les Halles. Ligne 11 coupée entre Châtelet et Hôtel de Ville.</p></li>
+    </ul>
+    <p class="note">La presse annonce plus de 40 stations, la Préfecture plus d'une trentaine. La liste station par station n'est pas publiée : vérifier dans l'application de la RATP avant chaque trajet.</p>
+  </section>
+
+  <section aria-labelledby="h-zones">
+    <h2 id="h-zones">Zones à éviter</h2>
+    <ul class="plain">
+      <li><strong>Le cortège</strong>, de la porte de Bagnolet (20e) à la porte de Charenton (12e). Le Conseil d'État a validé ce parcours dans la nuit et annulé le trajet Bastille–Nation. Horaires selon les sources : rassemblement autorisé de 12 h à 18 h, ou départ à 14 h.</li>
+      <li><strong>Le centre de Paris</strong> : tous les parcours qui le traversaient sont interdits. Les fermetures de stations visent surtout Concorde–Assemblée–Champs-Élysées et Bastille–République.</li>
+      <li><strong>Ce soir</strong>, République et Châtelet-Les Halles à partir de 23 h (couvre-feu).</li>
+    </ul>
+    <p class="note">Contexte : troisième journée de mobilisation contre la vie chère (CGT, Gilets jaunes, lycéens). La Préfecture invoque un contexte social « extrêmement tendu » après les dégradations du 17 octobre.</p>
+  </section>
+
+  <section aria-labelledby="h-news">
+    <h2 id="h-news">Depuis le point précédent</h2>
+    <p>Premier point de la journée. Aucun incident signalé ce matin dans les sources consultées.</p>
+  </section>
+
+  <section class="sources" aria-labelledby="h-src">
+    <h2 id="h-src">Sources</h2>
+    <ul class="plain">
+      <li><a href="https://www.cnews.fr/france/2026-10-30/manifestation-du-31-octobre-plus-de-40-stations-de-metro-fermees-paris-1944976">CNews : plus de 40 stations de métro fermées</a></li>
+      <li><a href="https://www.sortiraparis.com/actualites/a-paris/articles/355779-manifestation-du-31-octobre-a-paris-parcours-autorises-metro-couvre-feux-ce-qu-il-faut-savoir">Sortir à Paris : métro, parcours, couvre-feux</a></li>
+      <li><a href="https://www.sortiraparis.com/en/news/in-paris/articles/356351-october-31-protest-bastille-nation-route-canceled-by-the-council-of-state">Sortir à Paris : Bastille–Nation annulé par le Conseil d'État</a></li>
+      <li><a href="https://france3-regions.franceinfo.fr/paris-ile-de-france/manifestation-du-31-octobre-a-paris-parcours-declares-interdictions-dispositif-de-securite-ce-que-l-on-sait-sur-la-mobilisation-contre-la-vie-chere-3441171.html">France 3 Paris Île-de-France : lignes perturbées et dispositif</a></li>
+      <li><a href="https://www.franceinfo.fr/societe/manifestations/la-prefecture-de-police-interdit-les-parcours-dans-le-centre-de-paris-deposes-par-la-cgt-et-les-gilets-jaunes-pour-la-manifestation-du-31-octobre_8260361.html">franceinfo : la Préfecture interdit les parcours dans le centre</a></li>
+      <li><a href="https://www.franceinfo.fr/economie/greve/direct-mobilisation-du-31-octobre-suivez-cette-troisieme-journee-de-manifestations-pour-laquelle-le-gouvernement-prevoit-un-dispositif-de-securite-exceptionnel_8260562.html">franceinfo : le direct de la journée</a></li>
+      <li><a href="https://www.cnews.fr/france/2026-10-31/mobilisation-du-31-octobre-quel-parcours-pour-la-manifestation-paris-1944300">CNews : quel parcours pour la manifestation</a></li>
+    </ul>
+  </section>
+
+  <footer>Synthèse d'articles de presse, pas une source officielle. Les fermetures évoluent dans la journée : l'application de la RATP et la Préfecture de police font foi. Urgences : 112 ou 17. La page se recharge seule toutes les 5 minutes.</footer>
+</main>
+</body>
+</html>
