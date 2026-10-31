@@ -9,7 +9,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Manifs Paris">
 <meta name="theme-color" content="#23407a">
-<meta name="build" content="8">
+<meta name="build" content="9">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
@@ -57,7 +57,7 @@ h2 { font: 600 21px/1.15 var(--display); margin: 0; letter-spacing: .02em; text-
 p { margin: 0; }
 .stamp { color: var(--muted); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .stamp b { color: var(--accent); font-variant-numeric: tabular-nums; }
-.pill { display: block; padding: 7px 10px; border-radius: 8px; border-left: 5px solid; font-size: 15px; line-height: 1.4; }
+.pill { display: block; padding: 7px 10px; border-radius: 8px; font-size: 15px; line-height: 1.4; }
 .pill .k { font: 700 14px/1.4 var(--display); text-transform: uppercase; letter-spacing: .04em; margin-right: 6px; }
 .p-closed { background: var(--closed-bg); border-color: var(--closed); }
 .p-closed .k { color: var(--closed); }
@@ -81,7 +81,7 @@ section { background: var(--surface); border: 1px solid var(--line); border-radi
 .feed time { font: 700 18px/1.3 var(--display); color: var(--accent); font-variant-numeric: tabular-nums; }
 .note { color: var(--muted); font-size: 15px; }
 /* Une publication de journaliste non reprise par un media reste visuellement a part des faits confirmes. */
-.feed li.unconf p { border-left: 3px dashed var(--warn); padding-left: 8px; font-style: italic; }
+.feed li.unconf p { font-style: italic; }
 .feed li.unconf p::before { content: "Non confirm\00e9  "; font: 700 12px/1 var(--display); font-style: normal; text-transform: uppercase; letter-spacing: .05em; color: var(--warn); background: var(--warn-bg); padding: 3px 6px; border-radius: 99px; margin-right: 6px; }
 details { font-size: 15px; }
 summary { cursor: pointer; font: 600 18px/1.3 var(--display); text-transform: uppercase; letter-spacing: .02em; }
@@ -232,7 +232,7 @@ footer { color: var(--muted); font-size: 14px; }
     {"nom": "Palais-Royal (Conseil d'État)", "lat": 48.8635, "lon": 2.3368, "rayon": 250, "niveau": "faible"}
   ]</script>
   <!-- Les anciennes versions de la page ne savent remplacer que ce bloc : cette image, une fois inseree, recharge toute la page si la mise en page (meta build) a change. Garder data-build egal a la meta. -->
-  <img alt="" hidden width="1" height="1" data-build="8" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
+  <img alt="" hidden width="1" height="1" data-build="9" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
 </main>
 <script>
 // Chaque fil ne montre que la derniere entree ; les precedentes passent dans un
