@@ -74,6 +74,8 @@ section { background: var(--surface); border: 1px solid var(--line); border-radi
 details { font-size: 15px; }
 summary { cursor: pointer; font: 600 18px/1.3 var(--display); text-transform: uppercase; letter-spacing: .02em; }
 details ul { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 4px; }
+.older summary { font: 600 15px/1.3 var(--body); text-transform: none; letter-spacing: 0; color: var(--accent); }
+.older .feed { margin-top: 8px; padding-left: 0; }
 a { color: var(--accent); }
 a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 footer { color: var(--muted); font-size: 14px; }
@@ -142,6 +144,24 @@ footer { color: var(--muted); font-size: 14px; }
 <script>
 // Le cache de GitHub Pages sert jusqu'a 10 min une ancienne version : une adresse
 // jamais vue force la derniere. Ailleurs (page Claude), un simple rechargement suffit.
+// Chaque fil ne montre que la derniere entree ; les precedentes passent dans un
+// bloc repliable, ce qui laisse le HTML des mises a jour inchange (on ajoute en tete).
+document.querySelectorAll("ul.feed").forEach(function (feed) {
+  var items = Array.prototype.slice.call(feed.children, 1);
+  if (!items.length) return;
+  var box = document.createElement("details");
+  box.className = "older";
+  var sum = document.createElement("summary");
+  sum.textContent = items.length > 1
+    ? "Voir les " + items.length + " mises \u00e0 jour pr\u00e9c\u00e9dentes"
+    : "Voir la mise \u00e0 jour pr\u00e9c\u00e9dente";
+  var list = document.createElement("ul");
+  list.className = "feed";
+  items.forEach(function (li) { list.appendChild(li); });
+  box.appendChild(sum);
+  box.appendChild(list);
+  feed.after(box);
+});
 document.getElementById("reload").addEventListener("click", function () {
   if (location.hostname.endsWith("github.io")) {
     location.replace(location.pathname + "?v=" + Date.now());
