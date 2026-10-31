@@ -9,7 +9,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Manifs Paris">
 <meta name="theme-color" content="#23407a">
-<meta name="build" content="7">
+<meta name="build" content="8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
@@ -272,7 +272,7 @@ footer { color: var(--muted); font-size: 14px; }
     {"nom": "Palais-Royal (Conseil d'État)", "lat": 48.8635, "lon": 2.3368, "rayon": 250, "niveau": "moyenne, rassemblement à 14 h"}
   ]</script>
   <!-- Les anciennes versions de la page ne savent remplacer que ce bloc : cette image, une fois inseree, recharge toute la page si la mise en page (meta build) a change. Garder data-build egal a la meta. -->
-  <img alt="" hidden width="1" height="1" data-build="7" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
+  <img alt="" hidden width="1" height="1" data-build="8" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
 </main>
 <script>
 // Chaque fil ne montre que la derniere entree ; les precedentes passent dans un
@@ -339,7 +339,13 @@ function refresh(manual) {
 document.addEventListener("click", function (e) {
   if (e.target.closest && e.target.closest("#reload")) refresh(true);
 });
-setInterval(function () { refresh(false); }, 60000);
+// La page se tient a jour seule : verification toutes les 30 s, et des que le
+// telephone revient sur la page (deverrouillage, retour d'une autre app, retour
+// du reseau). Le geste de tirer vers le bas reste possible mais n'est plus utile.
+setInterval(function () { refresh(false); }, 30000);
+window.addEventListener("pageshow", function () { refresh(false); });
+window.addEventListener("focus", function () { refresh(false); });
+window.addEventListener("online", function () { refresh(false); });
 // Une page rouverte depuis le cache du telephone peut dater de plusieurs heures :
 // on verifie tout de suite au chargement.
 setTimeout(function () { refresh(false); }, 1500);
