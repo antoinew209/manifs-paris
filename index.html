@@ -45,7 +45,8 @@
 html, body { margin: 0; }
 body { background: var(--bg); color: var(--ink); font: 400 17px/1.5 var(--body); }
 main { max-width: 680px; margin: 0 auto; padding: 20px 16px 40px; display: grid; gap: 14px; }
-header { display: grid; gap: 4px; }
+header { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: start; }
+header .stamp { grid-column: 1 / -1; }
 h1 { font: 700 32px/1.05 var(--display); margin: 0; text-wrap: balance; letter-spacing: .01em; }
 h2 { font: 600 21px/1.15 var(--display); margin: 0; letter-spacing: .02em; text-transform: uppercase; }
 p { margin: 0; }
@@ -79,7 +80,7 @@ details ul { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 4px; }
 a { color: var(--accent); }
 a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 footer { color: var(--muted); font-size: 14px; }
-.reload { justify-self: start; font: 700 16px/1 var(--display); text-transform: uppercase; letter-spacing: .05em; color: #fff; background: var(--accent); border: 0; border-radius: 8px; padding: 12px 18px; cursor: pointer; }
+.reload { font: 700 14px/1 var(--display); text-transform: uppercase; letter-spacing: .05em; color: #fff; background: var(--accent); border: 0; border-radius: 8px; padding: 10px 12px; margin-top: 2px; cursor: pointer; white-space: nowrap; }
 :root[data-theme="dark"] .reload { color: #12151c; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .reload { color: #12151c; } }
 .reload:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
@@ -90,7 +91,7 @@ footer { color: var(--muted); font-size: 14px; }
 <main>
   <header>
     <h1>Centre de Paris, samedi 31 octobre</h1>
-    <button class="reload" id="reload" type="button">Actualiser la page</button>
+    <button class="reload" id="reload" type="button" aria-label="Actualiser la page">&#8635; Actualiser</button>
     <p class="stamp">Point de <b>10 h</b> · mis à jour toutes les 30 min · prochain vers 10 h 30</p>
   </header>
 
