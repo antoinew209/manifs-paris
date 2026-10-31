@@ -109,6 +109,7 @@ footer { color: var(--muted); font-size: 14px; }
 <div class="geo-wrap">
   <div class="geo-alert" id="geo-alert" role="alert" hidden></div>
   <div class="geo-bar"><button class="geo-btn" id="geo-btn" type="button" aria-pressed="false">Activer l'alerte de proximité</button><span class="geo-status" id="geo-status">Ta position reste sur ton téléphone, rien n'est envoyé.</span></div>
+  <p class="geo-status" id="sync">Vérification de la dernière version…</p>
 </div>
 <main>
   <header>
@@ -241,7 +242,15 @@ function refresh(manual) {
       document.querySelector("main").replaceWith(fresh);
       check();
     })
-    .catch(function () { if (manual) location.reload(); })
+    .then(function () {
+      var t = new Date();
+      document.getElementById("sync").textContent = "Derni\u00e8re version v\u00e9rifi\u00e9e \u00e0 " +
+        String(t.getHours()).padStart(2, "0") + ":" + String(t.getMinutes()).padStart(2, "0") + ":" + String(t.getSeconds()).padStart(2, "0");
+    })
+    .catch(function () {
+      document.getElementById("sync").textContent = "V\u00e9rification impossible, nouvel essai dans une minute.";
+      if (manual) location.replace(location.pathname + "?v=" + Date.now());
+    })
     .then(function () {
       busy = false;
       var b = document.getElementById("reload");
@@ -252,6 +261,9 @@ document.addEventListener("click", function (e) {
   if (e.target.closest && e.target.closest("#reload")) refresh(true);
 });
 setInterval(function () { refresh(false); }, 60000);
+// Une page rouverte depuis le cache du telephone peut dater de plusieurs heures :
+// on verifie tout de suite au chargement.
+setTimeout(function () { refresh(false); }, 1500);
 document.addEventListener("visibilitychange", function () { if (!document.hidden) refresh(false); });
 
 // Alerte de proximite : la position est lue par le navigateur et comparee ici
