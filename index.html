@@ -9,7 +9,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Manifs Paris">
 <meta name="theme-color" content="#23407a">
-<meta name="build" content="2">
+<meta name="build" content="3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
@@ -65,13 +65,14 @@ p { margin: 0; }
 .p-warn .k { color: var(--warn); }
 .p-night { background: var(--night-bg); border-color: var(--night); }
 .p-night .k { color: var(--night); }
-section { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 10px; }
+section { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 6px; }
 .zones { list-style: none; margin: 0; padding: 0; display: grid; }
-.zone { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+.zone { padding: 8px 0; border-top: 1px solid var(--line); }
 .zone:first-child { border-top: 0; padding-top: 0; }
 .zone strong { font-weight: 700; }
-.zone p { grid-column: 1 / -1; font-size: 16px; }
-.tag { font: 700 13px/1 var(--display); text-transform: uppercase; letter-spacing: .05em; padding: 5px 8px; border-radius: 99px; align-self: start; white-space: nowrap; }
+.zone p { margin-top: 2px; font-size: 16px; }
+.tag { font: 700 13px/1 var(--display); text-transform: uppercase; letter-spacing: .05em; padding: 5px 8px; border-radius: 99px; white-space: nowrap; }
+.zone .tag { display: inline-block; margin-left: 6px; vertical-align: 2px; }
 .t-closed { background: var(--closed-bg); color: var(--closed); }
 .t-warn { background: var(--warn-bg); color: var(--warn); }
 .t-ok { background: var(--ok-bg); color: var(--ok); }
@@ -212,7 +213,7 @@ footer { color: var(--muted); font-size: 14px; }
     {"nom": "Assemblée nationale", "lat": 48.8619, "lon": 2.3186, "rayon": 300, "niveau": "moyenne"}
   ]</script>
   <!-- Les anciennes versions de la page ne savent remplacer que ce bloc : cette image, une fois inseree, recharge toute la page si la mise en page (meta build) a change. Garder data-build egal a la meta. -->
-  <img alt="" hidden width="1" height="1" data-build="2" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
+  <img alt="" hidden width="1" height="1" data-build="3" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
 </main>
 <script>
 // Chaque fil ne montre que la derniere entree ; les precedentes passent dans un
