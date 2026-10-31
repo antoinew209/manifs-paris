@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="refresh" content="300">
 <title>Paris, manifs du 31 octobre</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-180.png">
@@ -154,33 +153,58 @@ footer { color: var(--muted); font-size: 14px; }
   <footer>Synthèse d'articles de presse, pas une source officielle. L'application de la RATP et la Préfecture de police font foi. Urgences : 112 ou 17.</footer>
 </main>
 <script>
-// Le cache de GitHub Pages sert jusqu'a 10 min une ancienne version : une adresse
-// jamais vue force la derniere. Ailleurs (page Claude), un simple rechargement suffit.
 // Chaque fil ne montre que la derniere entree ; les precedentes passent dans un
 // bloc repliable, ce qui laisse le HTML des mises a jour inchange (on ajoute en tete).
-document.querySelectorAll("ul.feed").forEach(function (feed) {
-  var items = Array.prototype.slice.call(feed.children, 1);
-  if (!items.length) return;
-  var box = document.createElement("details");
-  box.className = "older";
-  var sum = document.createElement("summary");
-  sum.textContent = items.length > 1
-    ? "Voir les " + items.length + " mises \u00e0 jour pr\u00e9c\u00e9dentes"
-    : "Voir la mise \u00e0 jour pr\u00e9c\u00e9dente";
-  var list = document.createElement("ul");
-  list.className = "feed";
-  items.forEach(function (li) { list.appendChild(li); });
-  box.appendChild(sum);
-  box.appendChild(list);
-  feed.after(box);
+function collapseFeeds(root) {
+  root.querySelectorAll("ul.feed").forEach(function (feed) {
+    if (feed.closest("details.older")) return;
+    var items = Array.prototype.slice.call(feed.children, 1);
+    if (!items.length) return;
+    var box = document.createElement("details");
+    box.className = "older";
+    var sum = document.createElement("summary");
+    sum.textContent = items.length > 1
+      ? "Voir les " + items.length + " mises à jour précédentes"
+      : "Voir la mise à jour précédente";
+    var list = document.createElement("ul");
+    list.className = "feed";
+    items.forEach(function (li) { list.appendChild(li); });
+    box.appendChild(sum);
+    box.appendChild(list);
+    feed.after(box);
+  });
+}
+collapseFeeds(document);
+
+// Recharger en naviguant echoue dans l'app ajoutee a l'ecran d'accueil et sert
+// souvent la version en cache : on va chercher la page sans cache et on remplace
+// le contenu sur place.
+var busy = false;
+function refresh(manual) {
+  if (busy) return;
+  busy = true;
+  var btn = document.getElementById("reload");
+  if (manual && btn) btn.textContent = "↻ …";
+  fetch(location.pathname + "?v=" + Date.now(), { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then(function (html) {
+      var fresh = new DOMParser().parseFromString(html, "text/html").querySelector("main");
+      if (!fresh) throw new Error("vide");
+      collapseFeeds(fresh);
+      document.querySelector("main").replaceWith(fresh);
+    })
+    .catch(function () { if (manual) location.reload(); })
+    .then(function () {
+      busy = false;
+      var b = document.getElementById("reload");
+      if (b) b.innerHTML = "&#8635; Actualiser";
+    });
+}
+document.addEventListener("click", function (e) {
+  if (e.target.closest && e.target.closest("#reload")) refresh(true);
 });
-document.getElementById("reload").addEventListener("click", function () {
-  if (location.hostname.endsWith("github.io")) {
-    location.replace(location.pathname + "?v=" + Date.now());
-  } else {
-    location.reload();
-  }
-});
+setInterval(function () { refresh(false); }, 60000);
+document.addEventListener("visibilitychange", function () { if (!document.hidden) refresh(false); });
 </script>
 </body>
 </html>
