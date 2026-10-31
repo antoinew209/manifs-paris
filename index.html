@@ -50,7 +50,7 @@ header .stamp { grid-column: 1 / -1; }
 h1 { font: 700 32px/1.05 var(--display); margin: 0; text-wrap: balance; letter-spacing: .01em; }
 h2 { font: 600 21px/1.15 var(--display); margin: 0; letter-spacing: .02em; text-transform: uppercase; }
 p { margin: 0; }
-.stamp { color: var(--muted); font-size: 15px; }
+.stamp { color: var(--muted); font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .stamp b { color: var(--accent); font-variant-numeric: tabular-nums; }
 .pill { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; padding: 10px 12px; border-radius: 8px; border-left: 5px solid; }
 .pill .k { font: 700 15px/1.3 var(--display); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; padding-top: 1px; }
@@ -92,7 +92,7 @@ footer { color: var(--muted); font-size: 14px; }
   <header>
     <h1>Centre de Paris, samedi 31 octobre</h1>
     <button class="reload" id="reload" type="button" aria-label="Actualiser la page">&#8635; Actualiser</button>
-    <p class="stamp">Point de <b>10 h</b> · mis à jour toutes les 30 min · prochain vers 10 h 30</p>
+    <p class="stamp">Point de <b>10 h</b> · prochain vers 10 h 30</p>
   </header>
 
   <div class="pill p-closed"><span class="k">Casseurs</span><span>Aucun incident signalé dans le périmètre à 10 h. Le ministère de l'Intérieur s'attend à des violences comparables à celles du 17 octobre.</span></div>
