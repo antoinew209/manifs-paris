@@ -60,6 +60,8 @@ p { margin: 0; }
 .pill .k { font: 700 15px/1.3 var(--display); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; padding-top: 1px; }
 .p-closed { background: var(--closed-bg); border-color: var(--closed); }
 .p-closed .k { color: var(--closed); }
+.p-warn { background: var(--warn-bg); border-color: var(--warn); }
+.p-warn .k { color: var(--warn); }
 .p-night { background: var(--night-bg); border-color: var(--night); }
 .p-night .k { color: var(--night); }
 section { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 10px; }
@@ -100,6 +102,7 @@ footer { color: var(--muted); font-size: 14px; }
   </header>
 
   <div class="pill p-closed"><span class="k">Casseurs</span><span>Aucun incident signalé dans le périmètre à 11 h. Selon la police, la principale menace est la mobilisation de casseurs à la tombée de la nuit.</span></div>
+  <div class="pill p-warn"><span class="k">Foule</span><span>Vigilance élevée ce soir à Châtelet-Les Halles et République, moyenne à Bastille et sur les quais Concorde–Assemblée.</span></div>
   <div class="pill p-night"><span class="k">Couvre-feu</span><span>Pour tous : 23 h – 6 h à Châtelet-Les Halles et République (résidents, salariés de la zone et secours exemptés). Mineurs non accompagnés : dès 21 h dans plusieurs secteurs.</span></div>
 
   <section aria-labelledby="h-zones">
@@ -125,6 +128,21 @@ footer { color: var(--muted); font-size: 14px; }
     <p class="note">Si commerces qui baissent le rideau, groupe vêtu de noir et masqué ou odeur de lacrymogène : s'éloigner par une rue perpendiculaire.</p>
   </section>
 
+  <section aria-labelledby="h-foule">
+    <h2 id="h-foule">Zones à risque de foule</h2>
+    <ul class="zones">
+      <li class="zone"><strong>Châtelet-Les Halles</strong><span class="tag t-closed">Élevé ce soir</span><p>Couvre-feu dès 23 h décidé par la Préfecture. Stations fermées dès 20 h : risque d'attroupements en surface au moment de rentrer (estimation).</p></li>
+      <li class="zone"><strong>République</strong><span class="tag t-closed">Élevé ce soir</span><p>Couvre-feu dès 23 h, stations fermées depuis 9 h. Lieu habituel de rassemblement après les manifestations (estimation).</p></li>
+      <li class="zone"><strong>Bastille</strong><span class="tag t-warn">Moyen</span><p>Départ initialement prévu du cortège, annulé par le Conseil d'État. Stations fermées par précaution. Possibles rassemblements non autorisés (estimation).</p></li>
+      <li class="zone"><strong>Quais, Concorde–Assemblée</strong><span class="tag t-warn">Moyen</span><p>Rassemblements non déclarés interdits autour de l'Assemblée nationale jusqu'à lundi. Les Gilets jaunes visaient la Concorde, parcours interdit.</p></li>
+      <li class="zone"><strong>Notre-Dame, Marais, place des Vosges</strong><span class="tag t-ok">Faible</span><p>Aucune mesure particulière. Affluence habituelle d'un samedi.</p></li>
+    </ul>
+    <ul class="feed">
+      <li><time>11 h</time><p>Niveaux établis d'après les mesures de la Préfecture. Aucune foule incontrôlée signalée dans le périmètre.</p></li>
+    </ul>
+    <p class="note">« Estimation » signale une déduction tirée des mesures officielles, pas un fait rapporté.</p>
+  </section>
+
   <section aria-labelledby="h-news">
     <h2 id="h-news">Depuis le point précédent</h2>
     <ul class="feed">
@@ -146,6 +164,7 @@ footer { color: var(--muted); font-size: 14px; }
       <li><a href="https://france3-regions.franceinfo.fr/paris-ile-de-france/manifestation-du-31-octobre-a-paris-parcours-declares-interdictions-dispositif-de-securite-ce-que-l-on-sait-sur-la-mobilisation-contre-la-vie-chere-3441171.html">France 3 Paris Île-de-France : lignes perturbées</a></li>
       <li><a href="https://france3-regions.franceinfo.fr/paris-ile-de-france/paris/les-clients-ont-eu-tres-peur-victime-de-casseurs-ce-commercant-du-centre-de-paris-baissera-le-rideau-ce-samedi-31-octobre-3441105.html">France 3 : un commerçant du centre baisse le rideau</a></li>
       <li><a href="https://www.franceinfo.fr/societe/manifestations/la-prefecture-nous-balade-a-paris-le-parcours-de-la-manifestation-du-31-octobre-au-c-ur-d-un-bras-de-fer-judiciaire_8260127.html">franceinfo : le bras de fer sur le parcours</a></li>
+      <li><a href="https://mairie08.paris.fr/pages/week-end-de-la-toussaint-et-soiree-d-halloween-dispositif-de-securite-renforce-dans-le-8e-arrondissement-du-30-octobre-au-2-novembre-37063">Mairie du 8e : dispositif Toussaint et Halloween</a></li>
       <li><a href="https://www.lejdd.fr/Societe/manifestation-du-31-octobre-parcours-couvre-feux-ce-qui-vous-attend-a-paris-187359">JDD : parcours et couvre-feux</a></li>
     </ul>
   </details>
