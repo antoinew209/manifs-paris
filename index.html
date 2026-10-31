@@ -9,7 +9,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Manifs Paris">
 <meta name="theme-color" content="#23407a">
-<meta name="build" content="3">
+<meta name="build" content="4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
@@ -57,8 +57,8 @@ h2 { font: 600 21px/1.15 var(--display); margin: 0; letter-spacing: .02em; text-
 p { margin: 0; }
 .stamp { color: var(--muted); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .stamp b { color: var(--accent); font-variant-numeric: tabular-nums; }
-.pill { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: start; padding: 7px 10px; font-size: 15px; line-height: 1.4; border-radius: 8px; border-left: 5px solid; }
-.pill .k { font: 700 14px/1.4 var(--display); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; padding-top: 1px; }
+.pill { display: block; padding: 7px 10px; border-radius: 8px; border-left: 5px solid; font-size: 15px; line-height: 1.4; }
+.pill .k { font: 700 14px/1.4 var(--display); text-transform: uppercase; letter-spacing: .04em; margin-right: 6px; }
 .p-closed { background: var(--closed-bg); border-color: var(--closed); }
 .p-closed .k { color: var(--closed); }
 .p-warn { background: var(--warn-bg); border-color: var(--warn); }
@@ -119,9 +119,9 @@ footer { color: var(--muted); font-size: 14px; }
     <p class="stamp">Point de <b>12 h 30</b> · prochain vers 13 h</p>
   </header>
 
-  <div class="pill p-closed"><span class="k">Casseurs</span><span>Aucun incident signalé dans le périmètre à 12 h 30. Selon la police, la principale menace est la mobilisation de casseurs à la tombée de la nuit.</span></div>
+  <div class="pill p-closed"><span class="k">Casseurs</span><span>Aucun incident signalé dans le périmètre à 12 h 30. Selon la police, la principale menace est la mobilisation de casseurs à la tombée de la nuit.</span></div>
   <div class="pill p-warn"><span class="k">Foule</span><span>Appels repérés à des rassemblements sauvages dans le centre ce soir. Vigilance élevée à Châtelet-Les Halles et République, moyenne à Bastille et sur les quais Concorde–Assemblée.</span></div>
-  <div class="pill p-night"><span class="k">Couvre-feu</span><span>Pour tous : 23 h – 6 h à Châtelet-Les Halles et République (résidents, salariés de la zone et secours exemptés). Mineurs non accompagnés : dès 21 h dans plusieurs secteurs.</span></div>
+  <div class="pill p-night"><span class="k">Couvre-feu</span><span>Pour tous : 23 h – 6 h à Châtelet-Les Halles et République (résidents, salariés de la zone et secours exemptés). Mineurs non accompagnés : dès 21 h dans plusieurs secteurs.</span></div>
 
   <section aria-labelledby="h-zones">
     <h2 id="h-zones">Par secteur</h2>
@@ -213,7 +213,7 @@ footer { color: var(--muted); font-size: 14px; }
     {"nom": "Assemblée nationale", "lat": 48.8619, "lon": 2.3186, "rayon": 300, "niveau": "moyenne"}
   ]</script>
   <!-- Les anciennes versions de la page ne savent remplacer que ce bloc : cette image, une fois inseree, recharge toute la page si la mise en page (meta build) a change. Garder data-build egal a la meta. -->
-  <img alt="" hidden width="1" height="1" data-build="3" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
+  <img alt="" hidden width="1" height="1" data-build="4" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
 </main>
 <script>
 // Chaque fil ne montre que la derniere entree ; les precedentes passent dans un
