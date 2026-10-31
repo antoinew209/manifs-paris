@@ -9,7 +9,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Manifs Paris">
 <meta name="theme-color" content="#23407a">
-<meta name="build" content="4">
+<meta name="build" content="5">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
@@ -95,6 +95,8 @@ footer { color: var(--muted); font-size: 14px; }
 :root[data-theme="dark"] .reload { color: #12151c; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .reload { color: #12151c; } }
 .reload:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.ptr { position: fixed; top: 0; left: 50%; transform: translate(-50%, -100%); z-index: 10; background: var(--accent); color: var(--bg); font: 700 13px/1 var(--display); text-transform: uppercase; letter-spacing: .05em; padding: 8px 12px; border-radius: 0 0 10px 10px; transition: transform .15s; pointer-events: none; }
+.ptr.show { transform: translate(-50%, 0); }
 .geo-wrap { max-width: 680px; margin: 0 auto; padding: 8px 16px 0; display: grid; gap: 6px; }
 .geo-bar { display: flex; gap: 8px; align-items: center; font-size: 13px; }
 .geo-btn { font: 700 13px/1 var(--display); text-transform: uppercase; letter-spacing: .05em; color: var(--ink); background: var(--surface); border: 2px solid var(--accent); border-radius: 8px; padding: 6px 9px; cursor: pointer; white-space: nowrap; }
@@ -108,6 +110,7 @@ footer { color: var(--muted); font-size: 14px; }
 </style>
 </head>
 <body>
+<div class="ptr" id="ptr" aria-hidden="true">Tirer pour actualiser</div>
 <div class="geo-wrap">
   <div class="geo-alert" id="geo-alert" role="alert" hidden></div>
   <div class="geo-bar"><button class="geo-btn" id="geo-btn" type="button" aria-pressed="false">Alerte proximité</button><span class="geo-status" id="geo-status"></span><span class="geo-status" id="sync">…</span></div>
@@ -213,7 +216,7 @@ footer { color: var(--muted); font-size: 14px; }
     {"nom": "Assemblée nationale", "lat": 48.8619, "lon": 2.3186, "rayon": 300, "niveau": "moyenne"}
   ]</script>
   <!-- Les anciennes versions de la page ne savent remplacer que ce bloc : cette image, une fois inseree, recharge toute la page si la mise en page (meta build) a change. Garder data-build egal a la meta. -->
-  <img alt="" hidden width="1" height="1" data-build="4" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
+  <img alt="" hidden width="1" height="1" data-build="5" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
 </main>
 <script>
 // Chaque fil ne montre que la derniere entree ; les precedentes passent dans un
@@ -367,6 +370,36 @@ document.getElementById("geo-btn").addEventListener("click", function () {
   btn.textContent = "Alerte activ\u00e9e";
   btn.setAttribute("aria-pressed", "true");
 });
+// Tirer vers le bas en haut de page actualise, comme dans une app : le navigateur
+// ne le fait pas pour une page ouverte depuis l'ecran d'accueil.
+(function () {
+  var startY = null, dy = 0, SEUIL = 70, ptr = document.getElementById("ptr");
+  window.addEventListener("touchstart", function (e) {
+    startY = window.scrollY <= 0 ? e.touches[0].clientY : null;
+    dy = 0;
+  }, { passive: true });
+  window.addEventListener("touchmove", function (e) {
+    if (startY === null) return;
+    dy = e.touches[0].clientY - startY;
+    if (dy > 15) {
+      ptr.classList.add("show");
+      ptr.textContent = dy > SEUIL ? "Relâcher pour actualiser" : "Tirer pour actualiser";
+    } else {
+      ptr.classList.remove("show");
+    }
+  }, { passive: true });
+  window.addEventListener("touchend", function () {
+    if (startY !== null && dy > SEUIL) {
+      ptr.textContent = "Actualisation…";
+      refresh(true);
+      setTimeout(function () { ptr.classList.remove("show"); }, 1200);
+    } else {
+      ptr.classList.remove("show");
+    }
+    startY = null;
+    dy = 0;
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>
