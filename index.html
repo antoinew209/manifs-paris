@@ -48,16 +48,16 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body { background: var(--bg); color: var(--ink); font: 400 17px/1.5 var(--body); }
-main { max-width: 680px; margin: 0 auto; padding: 20px 16px 40px; display: grid; gap: 14px; }
-header { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: start; }
+main { max-width: 680px; margin: 0 auto; padding: 8px 16px 40px; display: grid; gap: 12px; }
+header { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: center; }
 header .stamp { grid-column: 1 / -1; }
-h1 { font: 700 32px/1.05 var(--display); margin: 0; text-wrap: balance; letter-spacing: .01em; }
+h1 { font: 700 22px/1.1 var(--display); margin: 0; letter-spacing: .01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 h2 { font: 600 21px/1.15 var(--display); margin: 0; letter-spacing: .02em; text-transform: uppercase; }
 p { margin: 0; }
-.stamp { color: var(--muted); font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stamp { color: var(--muted); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .stamp b { color: var(--accent); font-variant-numeric: tabular-nums; }
-.pill { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; padding: 10px 12px; border-radius: 8px; border-left: 5px solid; }
-.pill .k { font: 700 15px/1.3 var(--display); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; padding-top: 1px; }
+.pill { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: start; padding: 7px 10px; font-size: 15px; line-height: 1.4; border-radius: 8px; border-left: 5px solid; }
+.pill .k { font: 700 14px/1.4 var(--display); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; padding-top: 1px; }
 .p-closed { background: var(--closed-bg); border-color: var(--closed); }
 .p-closed .k { color: var(--closed); }
 .p-warn { background: var(--warn-bg); border-color: var(--warn); }
@@ -89,18 +89,18 @@ details ul { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 4px; }
 a { color: var(--accent); }
 a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 footer { color: var(--muted); font-size: 14px; }
-.reload { font: 700 14px/1 var(--display); text-transform: uppercase; letter-spacing: .05em; color: #fff; background: var(--accent); border: 0; border-radius: 8px; padding: 10px 12px; margin-top: 2px; cursor: pointer; white-space: nowrap; }
+.reload { font: 700 18px/1 var(--body); color: #fff; background: var(--accent); border: 0; border-radius: 8px; width: 36px; height: 32px; cursor: pointer; }
 :root[data-theme="dark"] .reload { color: #12151c; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .reload { color: #12151c; } }
 .reload:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-@media (max-width: 400px) { h1 { font-size: 28px; } }
-.geo-wrap { max-width: 680px; margin: 0 auto; padding: 12px 16px 0; display: grid; gap: 8px; position: sticky; top: 0; z-index: 5; background: var(--bg); }
-.geo-bar { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
-.geo-btn { font: 700 14px/1 var(--display); text-transform: uppercase; letter-spacing: .05em; color: var(--ink); background: var(--surface); border: 2px solid var(--accent); border-radius: 8px; padding: 9px 12px; cursor: pointer; }
+.geo-wrap { max-width: 680px; margin: 0 auto; padding: 8px 16px 0; display: grid; gap: 6px; }
+.geo-bar { display: flex; gap: 8px; align-items: center; font-size: 13px; }
+.geo-btn { font: 700 13px/1 var(--display); text-transform: uppercase; letter-spacing: .05em; color: var(--ink); background: var(--surface); border: 2px solid var(--accent); border-radius: 8px; padding: 6px 9px; cursor: pointer; white-space: nowrap; }
 .geo-btn[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
 .geo-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-.geo-status { color: var(--muted); font-size: 14px; }
-.geo-alert { background: var(--closed); color: #fff; font-weight: 700; padding: 12px 14px; border-radius: 8px; }
+.geo-status { color: var(--muted); font-size: 13px; white-space: nowrap; }
+#sync { margin-left: auto; font-variant-numeric: tabular-nums; }
+.geo-alert { position: sticky; top: 0; z-index: 5; background: var(--closed); color: #fff; font-weight: 700; padding: 10px 12px; border-radius: 8px; }
 :root[data-theme="dark"] .geo-alert { color: #12151c; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .geo-alert { color: #12151c; } }
 </style>
@@ -108,13 +108,12 @@ footer { color: var(--muted); font-size: 14px; }
 <body>
 <div class="geo-wrap">
   <div class="geo-alert" id="geo-alert" role="alert" hidden></div>
-  <div class="geo-bar"><button class="geo-btn" id="geo-btn" type="button" aria-pressed="false">Activer l'alerte de proximité</button><span class="geo-status" id="geo-status">Ta position reste sur ton téléphone, rien n'est envoyé.</span></div>
-  <p class="geo-status" id="sync">Vérification de la dernière version…</p>
+  <div class="geo-bar"><button class="geo-btn" id="geo-btn" type="button" aria-pressed="false">Alerte proximité</button><span class="geo-status" id="geo-status"></span><span class="geo-status" id="sync">…</span></div>
 </div>
 <main>
   <header>
-    <h1>Centre de Paris, samedi 31 octobre</h1>
-    <button class="reload" id="reload" type="button" aria-label="Actualiser la page">&#8635; Actualiser</button>
+    <h1>Centre de Paris · 31 octobre</h1>
+    <button class="reload" id="reload" type="button" aria-label="Actualiser la page">&#8635;</button>
     <p class="stamp">Point de <b>11 h 30</b> · prochain vers 12 h</p>
   </header>
 
@@ -191,7 +190,7 @@ footer { color: var(--muted); font-size: 14px; }
     </ul>
   </details>
 
-  <footer>Synthèse d'articles de presse, pas une source officielle. Les lignes marquées « Non confirmé » viennent de publications publiques de journalistes, pas encore reprises par un média ni par les autorités. L'application de la RATP et la Préfecture de police font foi. Urgences : 112 ou 17.</footer>
+  <footer>Synthèse d'articles de presse, pas une source officielle. L'alerte de proximité compare ta position aux zones sur ton téléphone : elle n'est envoyée nulle part. Les lignes marquées « Non confirmé » viennent de publications publiques de journalistes, pas encore reprises par un média ni par les autorités. L'application de la RATP et la Préfecture de police font foi. Urgences : 112 ou 17.</footer>
   <script type="application/json" id="zones-data">[
     {"nom": "Châtelet-Les Halles", "lat": 48.8620, "lon": 2.3470, "rayon": 400, "niveau": "élevée ce soir"},
     {"nom": "République", "lat": 48.8674, "lon": 2.3636, "rayon": 350, "niveau": "élevée ce soir"},
@@ -232,7 +231,7 @@ function refresh(manual) {
   if (busy) return;
   busy = true;
   var btn = document.getElementById("reload");
-  if (manual && btn) btn.textContent = "↻ …";
+  if (manual && btn) btn.textContent = "\u2026";
   fetch(location.pathname + "?v=" + Date.now(), { cache: "no-store" })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
     .then(function (html) {
@@ -244,17 +243,17 @@ function refresh(manual) {
     })
     .then(function () {
       var t = new Date();
-      document.getElementById("sync").textContent = "Derni\u00e8re version v\u00e9rifi\u00e9e \u00e0 " +
-        String(t.getHours()).padStart(2, "0") + ":" + String(t.getMinutes()).padStart(2, "0") + ":" + String(t.getSeconds()).padStart(2, "0");
+      document.getElementById("sync").textContent = "\u2713 " +
+        String(t.getHours()).padStart(2, "0") + ":" + String(t.getMinutes()).padStart(2, "0");
     })
     .catch(function () {
-      document.getElementById("sync").textContent = "V\u00e9rification impossible, nouvel essai dans une minute.";
+      document.getElementById("sync").textContent = "\u26a0 hors ligne";
       if (manual) location.replace(location.pathname + "?v=" + Date.now());
     })
     .then(function () {
       busy = false;
       var b = document.getElementById("reload");
-      if (b) b.innerHTML = "&#8635; Actualiser";
+      if (b) b.innerHTML = "&#8635;";
     });
 }
 document.addEventListener("click", function (e) {
@@ -321,30 +320,30 @@ document.getElementById("geo-btn").addEventListener("click", function () {
   if (watchId !== null) {
     navigator.geolocation.clearWatch(watchId);
     watchId = null;
-    btn.textContent = "Activer l'alerte de proximité";
+    btn.textContent = "Alerte proximit\u00e9";
     btn.setAttribute("aria-pressed", "false");
-    status.textContent = "Alerte désactivée.";
+    status.textContent = "";
     check();
     return;
   }
-  if (!navigator.geolocation) { status.textContent = "Localisation indisponible dans ce navigateur."; return; }
+  if (!navigator.geolocation) { status.textContent = "Localisation indisponible"; return; }
   try { actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.resume) actx.resume(); } catch (e) {}
   if ("Notification" in window && Notification.permission === "default") {
     try { Notification.requestPermission(); } catch (e) {}
   }
-  status.textContent = "Recherche de ta position…";
+  status.textContent = "\u2026";
   watchId = navigator.geolocation.watchPosition(function (p) {
     lastPos = p.coords;
-    status.textContent = "Alerte active, précision ±" + Math.round(p.coords.accuracy) + " m. Garde la page ouverte.";
+    status.textContent = "\u00b1" + Math.round(p.coords.accuracy) + " m";
     check();
   }, function () {
     if (watchId !== null) navigator.geolocation.clearWatch(watchId);
     watchId = null;
-    btn.textContent = "Activer l'alerte de proximité";
+    btn.textContent = "Alerte proximit\u00e9";
     btn.setAttribute("aria-pressed", "false");
-    status.textContent = "Position refusée ou indisponible : autorise la localisation pour ce site.";
+    status.textContent = "Localisation refus\u00e9e";
   }, { enableHighAccuracy: true, maximumAge: 30000, timeout: 30000 });
-  btn.textContent = "Désactiver l'alerte";
+  btn.textContent = "Alerte activ\u00e9e";
   btn.setAttribute("aria-pressed", "true");
 });
 </script>
