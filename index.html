@@ -94,9 +94,22 @@ footer { color: var(--muted); font-size: 14px; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .reload { color: #12151c; } }
 .reload:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 @media (max-width: 400px) { h1 { font-size: 28px; } }
+.geo-wrap { max-width: 680px; margin: 0 auto; padding: 12px 16px 0; display: grid; gap: 8px; position: sticky; top: 0; z-index: 5; background: var(--bg); }
+.geo-bar { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.geo-btn { font: 700 14px/1 var(--display); text-transform: uppercase; letter-spacing: .05em; color: var(--ink); background: var(--surface); border: 2px solid var(--accent); border-radius: 8px; padding: 9px 12px; cursor: pointer; }
+.geo-btn[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
+.geo-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.geo-status { color: var(--muted); font-size: 14px; }
+.geo-alert { background: var(--closed); color: #fff; font-weight: 700; padding: 12px 14px; border-radius: 8px; }
+:root[data-theme="dark"] .geo-alert { color: #12151c; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .geo-alert { color: #12151c; } }
 </style>
 </head>
 <body>
+<div class="geo-wrap">
+  <div class="geo-alert" id="geo-alert" role="alert" hidden></div>
+  <div class="geo-bar"><button class="geo-btn" id="geo-btn" type="button" aria-pressed="false">Activer l'alerte de proximité</button><span class="geo-status" id="geo-status">Ta position reste sur ton téléphone, rien n'est envoyé.</span></div>
+</div>
 <main>
   <header>
     <h1>Centre de Paris, samedi 31 octobre</h1>
@@ -173,6 +186,13 @@ footer { color: var(--muted); font-size: 14px; }
   </details>
 
   <footer>Synthèse d'articles de presse, pas une source officielle. Les lignes marquées « Non confirmé » viennent de publications publiques de journalistes, pas encore reprises par un média ni par les autorités. L'application de la RATP et la Préfecture de police font foi. Urgences : 112 ou 17.</footer>
+  <script type="application/json" id="zones-data">[
+    {"nom": "Châtelet-Les Halles", "lat": 48.8620, "lon": 2.3470, "rayon": 400, "niveau": "élevée ce soir"},
+    {"nom": "République", "lat": 48.8674, "lon": 2.3636, "rayon": 350, "niveau": "élevée ce soir"},
+    {"nom": "Bastille", "lat": 48.8532, "lon": 2.3692, "rayon": 350, "niveau": "moyenne"},
+    {"nom": "Concorde", "lat": 48.8656, "lon": 2.3212, "rayon": 350, "niveau": "moyenne"},
+    {"nom": "Assemblée nationale", "lat": 48.8619, "lon": 2.3186, "rayon": 300, "niveau": "moyenne"}
+  ]</script>
 </main>
 <script>
 // Chaque fil ne montre que la derniere entree ; les precedentes passent dans un
@@ -214,6 +234,7 @@ function refresh(manual) {
       if (!fresh) throw new Error("vide");
       collapseFeeds(fresh);
       document.querySelector("main").replaceWith(fresh);
+      check();
     })
     .catch(function () { if (manual) location.reload(); })
     .then(function () {
@@ -227,6 +248,88 @@ document.addEventListener("click", function (e) {
 });
 setInterval(function () { refresh(false); }, 60000);
 document.addEventListener("visibilitychange", function () { if (!document.hidden) refresh(false); });
+
+// Alerte de proximite : la position est lue par le navigateur et comparee ici
+// aux zones de la page ; elle ne quitte jamais le telephone. Le navigateur ne
+// suit la position que page ouverte, d'ou le bandeau en plus de la notification.
+var watchId = null, lastPos = null, notified = {}, actx = null;
+var MARGE = 200;
+function zones() {
+  try { return JSON.parse(document.getElementById("zones-data").textContent); } catch (e) { return []; }
+}
+function dist(a, b, c, d) {
+  var r = Math.PI / 180, x = (c - a) * r, y = (d - b) * r;
+  var h = Math.sin(x / 2) * Math.sin(x / 2) + Math.cos(a * r) * Math.cos(c * r) * Math.sin(y / 2) * Math.sin(y / 2);
+  return 2 * 6371000 * Math.asin(Math.sqrt(h));
+}
+function beep() {
+  try {
+    if (actx) {
+      var o = actx.createOscillator(), g = actx.createGain();
+      o.frequency.value = 880; g.gain.value = 0.2;
+      o.connect(g); g.connect(actx.destination);
+      o.start(); o.stop(actx.currentTime + 0.4);
+    }
+  } catch (e) {}
+  if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+}
+function notify(text) {
+  if (!("Notification" in window) || Notification.permission !== "granted") return;
+  try { new Notification("Manifs Paris", { body: text, icon: "icon-180.png" }); } catch (e) {}
+}
+function check() {
+  var box = document.getElementById("geo-alert");
+  if (!lastPos || watchId === null) { box.hidden = true; return; }
+  var near = [];
+  zones().forEach(function (z) {
+    var d = dist(lastPos.latitude, lastPos.longitude, z.lat, z.lon);
+    if (d <= z.rayon + MARGE) near.push({ z: z, d: Math.max(0, Math.round((d - z.rayon) / 10) * 10) });
+  });
+  if (!near.length) { box.hidden = true; return; }
+  near.sort(function (a, b) { return a.d - b.d; });
+  var n = near[0];
+  var text = (n.d === 0 ? "Tu es dans la zone " + n.z.nom : "Tu es à " + n.d + " m de la zone " + n.z.nom) +
+    " (vigilance " + n.z.niveau + ").";
+  box.textContent = text;
+  box.hidden = false;
+  var now = Date.now();
+  if (!notified[n.z.nom] || now - notified[n.z.nom] > 600000) {
+    notified[n.z.nom] = now;
+    beep();
+    notify(text);
+  }
+}
+document.getElementById("geo-btn").addEventListener("click", function () {
+  var btn = this, status = document.getElementById("geo-status");
+  if (watchId !== null) {
+    navigator.geolocation.clearWatch(watchId);
+    watchId = null;
+    btn.textContent = "Activer l'alerte de proximité";
+    btn.setAttribute("aria-pressed", "false");
+    status.textContent = "Alerte désactivée.";
+    check();
+    return;
+  }
+  if (!navigator.geolocation) { status.textContent = "Localisation indisponible dans ce navigateur."; return; }
+  try { actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.resume) actx.resume(); } catch (e) {}
+  if ("Notification" in window && Notification.permission === "default") {
+    try { Notification.requestPermission(); } catch (e) {}
+  }
+  status.textContent = "Recherche de ta position…";
+  watchId = navigator.geolocation.watchPosition(function (p) {
+    lastPos = p.coords;
+    status.textContent = "Alerte active, précision ±" + Math.round(p.coords.accuracy) + " m. Garde la page ouverte.";
+    check();
+  }, function () {
+    if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+    watchId = null;
+    btn.textContent = "Activer l'alerte de proximité";
+    btn.setAttribute("aria-pressed", "false");
+    status.textContent = "Position refusée ou indisponible : autorise la localisation pour ce site.";
+  }, { enableHighAccuracy: true, maximumAge: 30000, timeout: 30000 });
+  btn.textContent = "Désactiver l'alerte";
+  btn.setAttribute("aria-pressed", "true");
+});
 </script>
 </body>
 </html>
