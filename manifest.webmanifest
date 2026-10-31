@@ -1,0 +1,12 @@
+{
+  "name": "Manifs Paris, 31 octobre",
+  "short_name": "Manifs Paris",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#141b2e",
+  "theme_color": "#23407a",
+  "icons": [
+    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
