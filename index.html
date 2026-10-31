@@ -9,6 +9,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Manifs Paris">
 <meta name="theme-color" content="#23407a">
+<meta name="build" content="2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
@@ -235,7 +236,12 @@ function refresh(manual) {
   fetch(location.pathname + "?v=" + Date.now(), { cache: "no-store" })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
     .then(function (html) {
-      var fresh = new DOMParser().parseFromString(html, "text/html").querySelector("main");
+      var doc = new DOMParser().parseFromString(html, "text/html");
+      // Si la mise en page elle-meme a change (styles, barre du haut), remplacer
+      // le contenu ne suffit pas : on recharge la page entiere.
+      var nb = doc.querySelector('meta[name="build"]'), cb = document.querySelector('meta[name="build"]');
+      if (nb && (!cb || nb.content !== cb.content)) { location.replace(location.pathname + "?v=" + Date.now()); return; }
+      var fresh = doc.querySelector("main");
       if (!fresh) throw new Error("vide");
       collapseFeeds(fresh);
       document.querySelector("main").replaceWith(fresh);
