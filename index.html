@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Fiche de terrain : lecture sur téléphone, l'état (fermé, à éviter, couvre-feu) se lit à la couleur avant le texte. */
+  /* Fiche de terrain limitée au centre : un secteur = une ligne, l'état se lit à la pastille avant le texte. */
   --bg: #f4f5f7;
   --surface: #ffffff;
   --ink: #1b2130;
@@ -21,6 +21,8 @@
   --closed-bg: #fdecea;
   --warn: #8a5a00;
   --warn-bg: #fff4dc;
+  --ok: #1d6b45;
+  --ok-bg: #e5f4ec;
   --night: #3b2f73;
   --night-bg: #eeebfb;
   --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
@@ -28,119 +30,107 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #12151c; --surface: #1b1f29; --ink: #e8ebf1; --muted: #9aa3b4; --line: #2c3240;
     --accent: #8fb0ef; --closed: #ff8a80; --closed-bg: #3a1c1c; --warn: #f2c066; --warn-bg: #352a12;
-    --night: #b9aaf5; --night-bg: #261f45; color-scheme: dark;
+    --ok: #7fd4a6; --ok-bg: #16301f; --night: #b9aaf5; --night-bg: #261f45; color-scheme: dark;
   }
+}
+:root[data-theme="dark"] {
+  --bg: #12151c; --surface: #1b1f29; --ink: #e8ebf1; --muted: #9aa3b4; --line: #2c3240;
+  --accent: #8fb0ef; --closed: #ff8a80; --closed-bg: #3a1c1c; --warn: #f2c066; --warn-bg: #352a12;
+  --ok: #7fd4a6; --ok-bg: #16301f; --night: #b9aaf5; --night-bg: #261f45; color-scheme: dark;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body { background: var(--bg); color: var(--ink); font: 400 17px/1.5 var(--body); }
-main { max-width: 680px; margin: 0 auto; padding: 20px 16px 40px; display: grid; gap: 16px; }
-header { display: grid; gap: 6px; }
-h1 { font: 700 34px/1.05 var(--display); margin: 0; text-wrap: balance; letter-spacing: .01em; }
-h2 { font: 600 22px/1.15 var(--display); margin: 0; letter-spacing: .02em; text-transform: uppercase; }
-.stamp { display: inline-flex; gap: 8px; align-items: center; flex-wrap: wrap; color: var(--muted); font-size: 15px; }
+main { max-width: 680px; margin: 0 auto; padding: 20px 16px 40px; display: grid; gap: 14px; }
+header { display: grid; gap: 4px; }
+h1 { font: 700 32px/1.05 var(--display); margin: 0; text-wrap: balance; letter-spacing: .01em; }
+h2 { font: 600 21px/1.15 var(--display); margin: 0; letter-spacing: .02em; text-transform: uppercase; }
+p { margin: 0; }
+.stamp { color: var(--muted); font-size: 15px; }
 .stamp b { color: var(--accent); font-variant-numeric: tabular-nums; }
-.brief { display: grid; gap: 8px; }
 .pill { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; padding: 10px 12px; border-radius: 8px; border-left: 5px solid; }
 .pill .k { font: 700 15px/1.3 var(--display); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; padding-top: 1px; }
 .p-closed { background: var(--closed-bg); border-color: var(--closed); }
 .p-closed .k { color: var(--closed); }
-.p-warn { background: var(--warn-bg); border-color: var(--warn); }
-.p-warn .k { color: var(--warn); }
 .p-night { background: var(--night-bg); border-color: var(--night); }
 .p-night .k { color: var(--night); }
-section { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 12px; }
-.slots { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.slot { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
-.slot:first-child { border-top: 0; padding-top: 0; }
-.slot time { font: 700 20px/1.2 var(--display); color: var(--closed); font-variant-numeric: tabular-nums; }
-.slot p { margin: 0; }
-.note { color: var(--muted); font-size: 15px; margin: 0; }
-p { margin: 0; }
-ul.plain { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
-.sources { font-size: 15px; }
-.sources a { color: var(--accent); }
-a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+section { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 10px; }
+.zones { list-style: none; margin: 0; padding: 0; display: grid; }
+.zone { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+.zone:first-child { border-top: 0; padding-top: 0; }
+.zone strong { font-weight: 700; }
+.zone p { grid-column: 1 / -1; font-size: 16px; }
+.tag { font: 700 13px/1 var(--display); text-transform: uppercase; letter-spacing: .05em; padding: 5px 8px; border-radius: 99px; align-self: start; white-space: nowrap; }
+.t-closed { background: var(--closed-bg); color: var(--closed); }
+.t-warn { background: var(--warn-bg); color: var(--warn); }
+.t-ok { background: var(--ok-bg); color: var(--ok); }
+.feed { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.feed li { display: grid; grid-template-columns: 56px 1fr; gap: 10px; }
+.feed time { font: 700 18px/1.3 var(--display); color: var(--accent); font-variant-numeric: tabular-nums; }
+.note { color: var(--muted); font-size: 15px; }
+details { font-size: 15px; }
+summary { cursor: pointer; font: 600 18px/1.3 var(--display); text-transform: uppercase; letter-spacing: .02em; }
+details ul { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 4px; }
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 footer { color: var(--muted); font-size: 14px; }
-@media (max-width: 400px) { h1 { font-size: 30px; } .slot { grid-template-columns: 56px 1fr; } }
+@media (max-width: 400px) { h1 { font-size: 28px; } }
 </style>
 </head>
 <body>
 <main>
   <header>
-    <h1>Paris, manifestations du samedi 31 octobre</h1>
-    <div class="stamp"><span>Mis à jour au point de <b>9 h 30</b></span><span>·</span><span>mise à jour toutes les 30 min, prochain point vers 10 h</span></div>
+    <h1>Centre de Paris, samedi 31 octobre</h1>
+    <p class="stamp">Point de <b>9 h 30</b> · mis à jour toutes les 30 min · prochain vers 10 h</p>
   </header>
 
-  <div class="brief" aria-label="En bref">
-    <div class="pill p-closed"><span class="k">Métro</span><span>Entre 30 et 40 stations fermées dans le centre, l'est et la rive gauche. Ligne 12 coupée entre Rennes et Saint-Lazare, tram T3 coupé dès 11 h vers la porte de Vincennes.</span></div>
-    <div class="pill p-warn"><span class="k">Cortège</span><span>Seul parcours autorisé : porte de Bagnolet → porte de Charenton, par les boulevards des Maréchaux. Départ à 14 h, 100 000 à 150 000 personnes attendues.</span></div>
-    <div class="pill p-closed"><span class="k">Casseurs</span><span>Aucun incident signalé à 9 h 30. Secteur à surveiller : cours de Vincennes et porte de Vincennes, sur le parcours.</span></div>
-    <div class="pill p-night"><span class="k">Couvre-feu</span><span>Pour tous : 23 h – 6 h, République et Châtelet-Les Halles, nuits du 31 octobre au 2 novembre (résidents, salariés de la zone et secours exemptés). Mineurs non accompagnés : dès 21 h dans plusieurs secteurs de Paris et autour de centres commerciaux des Hauts-de-Seine.</span></div>
-  </div>
-
-  <section aria-labelledby="h-metro">
-    <h2 id="h-metro">Stations fermées</h2>
-    <ul class="slots">
-      <li class="slot"><time>5 h 30</time><p>Secteur Champs-Élysées, Concorde, Invalides et Assemblée nationale. Charles-de-Gaulle-Étoile fermée toute la journée, ligne 6 coupée entre Charles-de-Gaulle-Étoile et Kléber. Ligne 12 coupée entre Rennes et Saint-Lazare dès l'ouverture.</p></li>
-      <li class="slot"><time>9 h</time><p>Secteur Bastille, République, Strasbourg-Saint-Denis et Opéra.</p></li>
-      <li class="slot"><time>11 h</time><p>Tramways T3a et T3b interrompus de part et d'autre de la porte de Vincennes.</p></li>
-      <li class="slot"><time>Aussi</time><p>Nation, Porte Dorée, Saint-Germain-des-Prés, Odéon et Quartier latin, horaires non précisés.</p></li>
-      <li class="slot"><time>20 h</time><p>Châtelet et Les Halles. Ligne 11 coupée entre Châtelet et Hôtel de Ville.</p></li>
-    </ul>
-    <p class="note">La presse annonce plus de 40 stations, la Préfecture plus d'une trentaine. La liste station par station n'est pas publiée : vérifier dans l'application de la RATP avant chaque trajet.</p>
-  </section>
+  <div class="pill p-closed"><span class="k">Casseurs</span><span>Aucun incident signalé dans le périmètre à 9 h 30.</span></div>
+  <div class="pill p-night"><span class="k">Couvre-feu</span><span>Pour tous : 23 h – 6 h à Châtelet-Les Halles et République (résidents, salariés de la zone et secours exemptés). Mineurs non accompagnés : dès 21 h dans plusieurs secteurs.</span></div>
 
   <section aria-labelledby="h-zones">
-    <h2 id="h-zones">Zones à éviter</h2>
-    <ul class="plain">
-      <li><strong>Le cortège</strong>, de la porte de Bagnolet (20e) à la porte de Charenton (12e). Le Conseil d'État a validé ce parcours dans la nuit et annulé le trajet Bastille–Nation. Rassemblement autorisé de 12 h à 18 h, départ du cortège à 14 h. Il passe par la porte de Vincennes et la porte Dorée.</li>
-      <li><strong>Le centre de Paris</strong> : tous les parcours qui le traversaient sont interdits. Les fermetures de stations visent surtout Concorde–Assemblée–Champs-Élysées et Bastille–République.</li>
-      <li><strong>Ce soir</strong>, République et Châtelet-Les Halles à partir de 23 h (couvre-feu). Le JDD mentionne aussi un couvre-feu visant les mineurs dans certains secteurs.</li>
+    <h2 id="h-zones">Par secteur</h2>
+    <ul class="zones">
+      <li class="zone"><strong>Bastille</strong><span class="tag t-closed">Stations fermées</span><p>Stations du secteur fermées depuis 9 h. Le cortège Bastille–Nation a été annulé : aucune manifestation autorisée ici, rassemblements non déclarés interdits.</p></li>
+      <li class="zone"><strong>Place des Vosges, Marais</strong><span class="tag t-ok">Rien de signalé</span><p>Aucune mesure propre au quartier. Les stations voisines de Bastille sont fermées.</p></li>
+      <li class="zone"><strong>Châtelet, Les Halles, Hôtel de Ville</strong><span class="tag t-warn">Ce soir</span><p>Châtelet et Les Halles ferment à 20 h, ligne 11 coupée entre Châtelet et Hôtel de Ville. Couvre-feu dès 23 h.</p></li>
+      <li class="zone"><strong>Notre-Dame, Quartier latin</strong><span class="tag t-closed">Stations fermées</span><p>Saint-Germain-des-Prés, Odéon et stations du Quartier latin fermées, horaires non précisés.</p></li>
+      <li class="zone"><strong>Quais, Concorde–Assemblée</strong><span class="tag t-closed">Stations fermées</span><p>Concorde, Invalides et Assemblée nationale fermées depuis 5 h 30. Ligne 12 coupée entre Rennes et Saint-Lazare.</p></li>
     </ul>
-    <p class="note">Contexte : troisième journée de mobilisation contre la vie chère (CGT, Gilets jaunes, lycéens). La Préfecture invoque un contexte social « extrêmement tendu » après les dégradations du 17 octobre.</p>
+    <p class="note">Hors périmètre : le seul cortège autorisé part à 14 h de la porte de Bagnolet vers la porte de Charenton, en bordure de Paris.</p>
   </section>
 
   <section aria-labelledby="h-casse">
     <h2 id="h-casse">Suivi des casseurs</h2>
-    <ul class="slots">
-      <li class="slot"><time>9 h 30</time><p>Aucun groupe de casseurs ni aucune dégradation signalés aujourd'hui dans les sources consultées.</p></li>
+    <ul class="feed">
+      <li><time>9 h 30</time><p>Aucun groupe de casseurs ni aucune dégradation signalés dans le périmètre.</p></li>
     </ul>
-    <ul class="plain">
-      <li><strong>Précédent :</strong> la Préfecture a fait état de plus de 500 casseurs face aux forces de l'ordre sur le cours de Vincennes lors d'une journée précédente (date non précisée par la source). Le cours de Vincennes rejoint le parcours d'aujourd'hui à la porte de Vincennes.</li>
-      <li><strong>Dispositif :</strong> rassemblements non déclarés interdits dans plusieurs périmètres jusqu'à lundi matin. La Ville mobilise plus de 1 000 agents et ouvre une cellule de crise à la mi-journée.</li>
-      <li><strong>Signes à repérer :</strong> commerces qui baissent leur rideau, groupe vêtu de noir et masqué en tête de cortège, odeur de lacrymogène. S'éloigner par une rue perpendiculaire.</li>
-    </ul>
-    <p class="note">Relève uniquement des faits rapportés par la presse ou les autorités, avec leur heure et leur lieu.</p>
+    <p class="note">Si commerces qui baissent le rideau, groupe vêtu de noir et masqué ou odeur de lacrymogène : s'éloigner par une rue perpendiculaire.</p>
   </section>
 
   <section aria-labelledby="h-news">
     <h2 id="h-news">Depuis le point précédent</h2>
-    <p><strong>9 h 30.</strong> Nouvelles fermetures signalées : Nation, Porte Dorée, Saint-Germain-des-Prés, Odéon et Quartier latin. Ligne 12 coupée entre Rennes et Saint-Lazare, tram T3 interrompu dès 11 h. Départ du cortège confirmé à 14 h. Toujours aucun incident signalé.</p>
-    <p class="note"><strong>9 h.</strong> Premier point de la journée. Aucun incident signalé.</p>
-  </section>
-
-  <section class="sources" aria-labelledby="h-src">
-    <h2 id="h-src">Sources</h2>
-    <ul class="plain">
-      <li><a href="https://www.cnews.fr/france/2026-10-30/manifestation-du-31-octobre-plus-de-40-stations-de-metro-fermees-paris-1944976">CNews : plus de 40 stations de métro fermées</a></li>
-      <li><a href="https://www.sortiraparis.com/actualites/a-paris/articles/355779-manifestation-du-31-octobre-a-paris-parcours-autorises-metro-couvre-feux-ce-qu-il-faut-savoir">Sortir à Paris : métro, parcours, couvre-feux</a></li>
-      <li><a href="https://www.sortiraparis.com/en/news/in-paris/articles/356351-october-31-protest-bastille-nation-route-canceled-by-the-council-of-state">Sortir à Paris : Bastille–Nation annulé par le Conseil d'État</a></li>
-      <li><a href="https://france3-regions.franceinfo.fr/paris-ile-de-france/manifestation-du-31-octobre-a-paris-parcours-declares-interdictions-dispositif-de-securite-ce-que-l-on-sait-sur-la-mobilisation-contre-la-vie-chere-3441171.html">France 3 Paris Île-de-France : lignes perturbées et dispositif</a></li>
-      <li><a href="https://www.franceinfo.fr/societe/manifestations/la-prefecture-de-police-interdit-les-parcours-dans-le-centre-de-paris-deposes-par-la-cgt-et-les-gilets-jaunes-pour-la-manifestation-du-31-octobre_8260361.html">franceinfo : la Préfecture interdit les parcours dans le centre</a></li>
-      <li><a href="https://www.franceinfo.fr/economie/greve/direct-mobilisation-du-31-octobre-suivez-cette-troisieme-journee-de-manifestations-pour-laquelle-le-gouvernement-prevoit-un-dispositif-de-securite-exceptionnel_8260562.html">franceinfo : le direct de la journée</a></li>
-      <li><a href="https://www.cnews.fr/france/2026-10-31/mobilisation-du-31-octobre-quel-parcours-pour-la-manifestation-paris-1944300">CNews : quel parcours pour la manifestation</a></li>
-      <li><a href="https://www.franceinfo.fr/societe/manifestations/direct-manifestations-du-31-octobre-le-parcours-du-defile-parisien-objet-d-un-bras-de-fer-entre-les-syndicats-et-les-autorites_8259785.html">franceinfo : stations fermées et couvre-feux</a></li>
-      <li><a href="https://www.lejdd.fr/Societe/manifestation-du-31-octobre-parcours-couvre-feux-ce-qui-vous-attend-a-paris-187359">JDD : parcours, couvre-feux, ce qui vous attend</a></li>
-      <li><a href="https://www.sortiraparis.com/en/news/in-paris/articles/355777-october-31-demonstration-more-than-33-metro-and-rer-stations-closed-this-saturday">Sortir à Paris : plus de 33 stations fermées</a></li>
-      <li><a href="https://presse.paris.fr/communiques/manifestations-du-31-octobre-la-ville-de-paris-pleinement-mobilisee-pour-prevenir-les-degradations-et-proteger-les-parisiennes-et-les-parisiens">Ville de Paris : dispositif contre les dégradations</a></li>
+    <ul class="feed">
+      <li><time>9 h 30</time><p>Fermetures à Saint-Germain-des-Prés, Odéon, Quartier latin. Ligne 12 coupée entre Rennes et Saint-Lazare.</p></li>
+      <li><time>9 h</time><p>Premier point de la journée.</p></li>
     </ul>
   </section>
 
-  <footer>Synthèse d'articles de presse, pas une source officielle. Les fermetures évoluent dans la journée : l'application de la RATP et la Préfecture de police font foi. Urgences : 112 ou 17. La page se recharge seule toutes les 5 minutes.</footer>
+  <details>
+    <summary>Sources</summary>
+    <ul>
+      <li><a href="https://www.franceinfo.fr/societe/manifestations/direct-manifestations-du-31-octobre-le-parcours-du-defile-parisien-objet-d-un-bras-de-fer-entre-les-syndicats-et-les-autorites_8259785.html">franceinfo : stations fermées et couvre-feux</a></li>
+      <li><a href="https://www.sortiraparis.com/en/news/in-paris/articles/355188-curfew-in-paris-on-october-31-and-november-1-can-you-go-home-or-work-after-11-p-m">Sortir à Paris : couvre-feu des 31 octobre et 1er novembre</a></li>
+      <li><a href="https://www.sortiraparis.com/en/news/in-paris/articles/356351-october-31-protest-bastille-nation-route-canceled-by-the-council-of-state">Sortir à Paris : Bastille–Nation annulé</a></li>
+      <li><a href="https://www.cnews.fr/france/2026-10-30/manifestation-du-31-octobre-plus-de-40-stations-de-metro-fermees-paris-1944976">CNews : stations de métro fermées</a></li>
+      <li><a href="https://france3-regions.franceinfo.fr/paris-ile-de-france/manifestation-du-31-octobre-a-paris-parcours-declares-interdictions-dispositif-de-securite-ce-que-l-on-sait-sur-la-mobilisation-contre-la-vie-chere-3441171.html">France 3 Paris Île-de-France : lignes perturbées</a></li>
+      <li><a href="https://www.lejdd.fr/Societe/manifestation-du-31-octobre-parcours-couvre-feux-ce-qui-vous-attend-a-paris-187359">JDD : parcours et couvre-feux</a></li>
+    </ul>
+  </details>
+
+  <footer>Synthèse d'articles de presse, pas une source officielle. L'application de la RATP et la Préfecture de police font foi. Urgences : 112 ou 17.</footer>
 </main>
 </body>
 </html>
