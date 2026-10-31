@@ -9,7 +9,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Manifs Paris">
 <meta name="theme-color" content="#23407a">
-<meta name="build" content="5">
+<meta name="build" content="6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
@@ -250,7 +250,7 @@ footer { color: var(--muted); font-size: 14px; }
     {"nom": "Palais-Royal (Conseil d'État)", "lat": 48.8635, "lon": 2.3368, "rayon": 250, "niveau": "moyenne, rassemblement à 14 h"}
   ]</script>
   <!-- Les anciennes versions de la page ne savent remplacer que ce bloc : cette image, une fois inseree, recharge toute la page si la mise en page (meta build) a change. Garder data-build egal a la meta. -->
-  <img alt="" hidden width="1" height="1" data-build="5" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
+  <img alt="" hidden width="1" height="1" data-build="6" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="var m=document.querySelector('meta[name=build]');if(!m||m.content!==this.dataset.build)location.replace(location.pathname+'?v='+Date.now())">
 </main>
 <script>
 // Chaque fil ne montre que la derniere entree ; les precedentes passent dans un
@@ -327,7 +327,7 @@ document.addEventListener("visibilitychange", function () { if (!document.hidden
 // aux zones de la page ; elle ne quitte jamais le telephone. Le navigateur ne
 // suit la position que page ouverte, d'ou le bandeau en plus de la notification.
 var watchId = null, lastPos = null, notified = {}, actx = null;
-var MARGE = 200;
+var MARGE = 500;
 function zones() {
   try { return JSON.parse(document.getElementById("zones-data").textContent); } catch (e) { return []; }
 }
